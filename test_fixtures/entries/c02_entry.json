@@ -1,0 +1,1 @@
+{"name": "hal_poll_shared", "file": "/home/admin/cc/wksp/siakam_security_skills/taint_path_walker/test_fixtures/project/c/c_channel.c", "form": "channel_read", "taint_data": "共享内存 shm_read_block -> req", "local_module": "ISP 固件", "partner_module": "DDR 控制器", "para_index": "-1"}

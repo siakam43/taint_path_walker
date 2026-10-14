@@ -1,0 +1,1 @@
+{"name": "isp::hal::bus_send", "file": "/home/admin/cc/wksp/siakam_security_skills/taint_path_walker/test_fixtures/project/cpp/vtable.cpp", "form": "parameter_input", "taint_data": "data/len", "local_module": "ISP 固件", "partner_module": "Sensor 总线", "para_index": "1/2"}

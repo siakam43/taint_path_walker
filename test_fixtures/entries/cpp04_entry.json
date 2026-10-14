@@ -1,0 +1,1 @@
+{"name": "isp::util::entry_template", "file": "/home/admin/cc/wksp/siakam_security_skills/taint_path_walker/test_fixtures/project/cpp/templates.cpp", "form": "parameter_input", "taint_data": "raw", "local_module": "ISP 固件", "partner_module": "用户态 APP", "para_index": "0"}

@@ -1,0 +1,1 @@
+{"name": "hal_dispatch", "file": "/home/admin/cc/wksp/siakam_security_skills/taint_path_walker/test_fixtures/project/c/c_channel.c", "form": "parameter_input", "taint_data": "ctx/req", "local_module": "ISP 固件", "partner_module": "用户态 APP", "para_index": "0/1"}

@@ -1,0 +1,1 @@
+{"name": "entry_fanout", "file": "/home/admin/cc/wksp/siakam_security_skills/taint_path_walker/test_fixtures/project/mech/limits.cpp", "form": "parameter_input", "taint_data": "idx/v", "local_module": "ISP 固件", "partner_module": "用户态 APP", "para_index": "0/1"}
