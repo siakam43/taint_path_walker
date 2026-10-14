@@ -25,6 +25,8 @@ description: 使用命令 /taint-path-walker <project_dir> <entry_json> 触发�
 
 ## 二、输入解析与初始化
 
+本章执行顺序：参数与 entry json 校验（2.1–2.4）→ 输出目录与预查重（2.5）→ macro.json 与 codegraph 检测（2.6–2.7）→ 分析范围（2.8）→ 路径规范（2.9）→ 存在性检查约定（2.10）。
+
 ### 2.1 命令格式
 
 ```
@@ -39,6 +41,7 @@ description: 使用命令 /taint-path-walker <project_dir> <entry_json> 触发�
 **规则：**
 
 1. 两个参数均必填；缺失任意一个（含只给一个）→ 打印用法提示（`用法：/taint-path-walker <project_dir> <entry_json>`）并结束本次任务，不做任何分析。
+2. 多于两个参数 → 打印用法提示并结束本次任务；空字符串形式的参数视为缺失。
 
 ### 2.2 输入文件（`{TreeID}_entry.json`）字段说明
 
@@ -47,6 +50,8 @@ entry json 为上游（api-cleaner）输出中该入口对应的一条数据，�
 ```json
 {"name": "func_a", "file": "<project_dir>/src/a.c", "form": "parameter_input", "taint_data": "data/len", "local_module": "ISP 固件", "partner_module": "用户态 APP", "para_index": "1/2"}
 ```
+
+（示例中 `<project_dir>` 为占位符，实际值为真实绝对路径。）
 
 字段说明与用途（所有字段值均为字符串）：
 
@@ -66,12 +71,12 @@ entry json 为上游（api-cleaner）输出中该入口对应的一条数据，�
 
 1. **文件名模式**：`<entry_json>` 的文件名必须符合 `{TreeID}_entry.json` 模式（TreeID 规则见 2.4）。
 2. **文件存在且格式合法**：文件存在（按 2.10 双方法交叉确认），且内容为合法 JSON 对象（`{...}`）；数组等其他形态不合法。
-3. **必填字段齐全**：`name`、`file`、`form`、`taint_data`、`para_index` 五个字段必须齐全；`local_module` / `partner_module` 缺失容错（允许缺失，不报错）。
+3. **必填字段齐全**：`name`、`file`、`form`、`taint_data`、`para_index` 五个字段必须齐全；`local_module` / `partner_module` 缺失容错（允许缺失，不报错）。必填字段值不得为空字符串。
 4. **form 取值合法**：`form` ∈ {`parameter_input`, `channel_read`, `both`}，其余取值不合法。
 5. **项数一致**：`para_index` 与 `taint_data` 各自按 `/` 分割后，项数必须一致。例：`"para_index": "1/2"` 配 `"taint_data": "data/len"` 合法；`"para_index": "1/2"` 配 `"taint_data": "data"` 不合法。
 6. **入口函数可定位**：入口函数源码可在 `file` 指定文件中定位到函数定义；`file` 不可读或其中没有该函数时，在全分析范围（2.8）内搜索定位；仍定位不到 → 校验不通过。
 
-**任一校验不通过 → 向用户报错并结束本次任务，不产出树文件**（避免毒化下游：下游 taint-tree-checker 会把错误输入当作真实污点树直接消费）。
+**任一校验不通过 → 向用户报错并结束本次任务，不产出树文件**（避免毒化下游：下游 taint-tree-checker 会把错误输入当作真实污点树直接消费）。报错信息必须具体指明：不通过的校验项、涉及的字段名或函数名、以及 entry json 路径。
 
 ### 2.4 TreeID 规则
 
@@ -84,7 +89,7 @@ entry json 为上游（api-cleaner）输出中该入口对应的一条数据，�
 
 1. **创建输出目录**：`<project_dir>/.ethunter_out/taint-path-walker/`；不存在则用 `mkdir -p` 创建。
 2. **创建失败降级**：创建失败（如权限不足）→ 降级到当前目录创建，确保有输出件；输出文件名不变（`{TreeID}.json`）。
-3. **预查重**：检查实际使用的输出路径下 `{TreeID}.json` 是否已存在——存在 → 打印 `该入口已有分析结果：{路径}，跳过分析。` 并结束本次任务（支持上游重复调度：同一入口被重复调用时直接跳过，不重复分析）。
+3. **预查重**：检查实际使用的输出路径下 `{TreeID}.json` 是否已存在——**已存在 → 打印 `该入口已有分析结果：{路径}，跳过分析。` 并结束本次任务**（支持上游重复调度：同一入口被重复调用时直接跳过，不重复分析）。
 
 ### 2.6 加载编译宏配置（macro.json）
 
@@ -113,6 +118,8 @@ entry json 为上游（api-cleaner）输出中该入口对应的一条数据，�
 1. 用情况 C 所列 `find` 命令收集源文件。
 2. 按 `.etignore` 中的排除规则逐条排除，剩余文件构成 scope_files。
 
+`.etignore` 语法与 `.gitignore` 一致；将收集到的文件及其所在目录与规则逐条匹配，被忽略的文件或目录下的文件一并排除。
+
 **情况 C：两者都不存在**
 
 直接使用以下 `find` 命令收集源文件，输出即 scope_files：
@@ -125,6 +132,8 @@ find <project_dir> -type f \( -name "*.c" -o -name "*.h" -o -name "*.cpp" -o -na
 
 ### 2.9 路径规范
 
+本节适用于 entry json 与输出中的 `file` 字段值；`<entry_json>` 参数本身的位置不受 `<project_dir>` 前缀约束。
+
 全任务统一按以下规范处理路径：
 
 1. **规范化 norm(p)**：分隔符统一为 `/`；去掉前导 `./`（连续重复一并去掉）。
@@ -134,9 +143,9 @@ find <project_dir> -type f \( -name "*.c" -o -name "*.h" -o -name "*.cpp" -o -na
 
 ### 2.10 文件存在性检查规则
 
-关键文件/目录的存在性判断**一律双方法交叉确认**，**禁止使用 `test -f` / `[ -f ]`**。
+关键文件/目录的存在性判断**一律双方法交叉确认**，**禁止使用 `test -f` / `[ -f ]`**。shell 的存在性判定在本环境中结果不可靠，一律以双方法交叉确认为准。
 
-**检查对象**（本 skill 的关键文件/目录）：entry json（2.3）、输出文件 `{TreeID}.json`（2.5 预查重）、`macro.json`（2.6）、`.codegraph`（2.7）、`clean_code.txt` 与 `.etignore`（2.8）。
+**检查对象**（本 skill 的关键文件/目录）：entry json（2.3）、输出文件 `{TreeID}.json`（2.5 预查重）、`macro.json`（2.6）、`.codegraph`（2.7）、`clean_code.txt` 与 `.etignore`（2.8）、`tmp/{TreeID}_state.json`（断点续分析状态文件，见第六章；其存在性检查同本节约定）。
 
 **双方法：**
 
@@ -150,6 +159,6 @@ find <project_dir> -type f \( -name "*.c" -o -name "*.h" -o -name "*.cpp" -o -na
 | 情况 | 处理 |
 |------|------|
 | 两次结果一致：都存在 | 判为**存在**，继续后续流程 |
-| 两次结果一致：都不存在 | 判为**不存在**，按对应规则处理（跳过 / 报错并结束） |
-| 两次结果不一致 | 换用第三种方法（如 `find`）确认，**以多数结果为准** |
-| 两次都无输出或都报错（无法得出确定结论） | **立即停止分析，向用户报告** |
+| 都确认文件不存在（含工具的明确"不存在"报错，如 "No such file or directory" / "File does not exist" / "NOT_FOUND"；对目录的 "is a directory" 类错误应判为存在） | 文件不存在，正常跳过/新建 |
+| 两次结果不一致 | 换用第三种方法（如 `find`）确认，**以多数结果为准**；第三方法仍无确定结论 → 按"两次均无法得出确定结论"行处理 |
+| 两次结果均无法得出确定结论（如权限错误、工具异常、均无有效输出） | **立即停止分析，向用户报告（报错并结束本次任务）。不得假设文件缺失后继续分析！** |
