@@ -129,6 +129,7 @@ api-cleaner 输出 `api_clean.json` 的一条，例如：
 4. `form` ∈ {parameter_input, channel_read, both}。
 5. `para_index` 与 `taint_data` 按 `/` 分割后项数一致。
 6. 入口函数源码可在 `file` 中（或全分析范围内）定位到函数定义。
+7. `para_index` 合法性：每项必须为整数，且取值为 `-1` 或位于 `[0, 入口函数形参个数)` 区间内（越界、非法数值、非整数项 → 校验不通过）；同时与 `form` 相容：`parameter_input` 各项不得为 `-1`，`channel_read` 各项必须为 `-1`（`both` 允许混合）。
 
 ---
 
