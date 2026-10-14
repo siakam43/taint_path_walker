@@ -3,7 +3,7 @@
 ## 测试项目结构
 
 test_fixtures/project/
-├── c/       c_base.{h,c}  c_channel.c          # C 基础用例
+├── c/       c_base.{h,c}  c_channel.c  c_filter.c   # C 基础用例
 ├── cpp/     vtable.{h,cpp} overload.cpp templates.cpp ctor_conv.cpp smart_lambda.cpp mi.cpp
 ├── mech/    dedup.c limits.cpp cycle.c external.c   # 机制类用例
 test_fixtures/entries/    # 各用例入口文件 {TreeID}_entry.json
@@ -22,6 +22,7 @@ project_dir = test_fixtures/project、entry_json = test_fixtures/entries/<用例
 | c01 | hal_apply_cfg | 链集合恰好 = { [hal_apply_cfg, hal_cfg_step1, hal_cfg_step2], [hal_apply_cfg, hal_cfg_step3], [hal_apply_cfg, hal_cfg_check] }；[E,hal_cfg_step2] 直调链被去重但其调用点并入链1（链1 的 E.calls 含 step1 与 step2 两条；[E,step3] 的 E.calls 为 step3；[E,check] 的 E.calls 为 check 且 taint_args 为空数组）；step2 内的校验不阻挡传播 |
 | c02 | hal_poll_shared | 恰好 1 条链 [hal_poll_shared, hal_process_cmd]；不得出现 shm_read_block 节点；calls.taint_args = [p, n] |
 | c03 | hal_dispatch | ctx（框架指针）未产生任何追踪；恰好 1 条链 [hal_dispatch, hal_process_cmd] |
+| c04 | hal_cfg_apply2 | flags（常量类参数：仅与固定值位测试、未流入其他位置）被二次过滤不追踪；恰 1 条链 [hal_cfg_apply2, c04_sink]，taint_args [p, n] |
 | cpp01 | isp::hal::bus_send | 分发点解析出 4 个候选：BusBase::transfer、SpiBus::transfer、I2cBus::transfer、UartBus::transfer；输出 4 条链 |
 | cpp02 | isp::hal::bus_send_static | 恰好 1 条链 [bus_send_static, SpiBus::transfer]；不得出现其他覆写或基类 |
 | cpp03 | isp::util::entry_overload | 3 条链，convert 三个重载各一条（按 begin_line 区分）；callee 同名不被误合并 |
@@ -39,6 +40,7 @@ project_dir = test_fixtures/project、entry_json = test_fixtures/entries/<用例
 | resume | c01 | 完成态 state + 删除输出后重跑：输出与直跑一致（走恢复路径）；构造半成品 state（末条终态路径移回 queue）重跑：输出仍与直跑一致 |
 | bad01 | 缺 form | 报错并结束；不生成 {TreeID}.json；错误信息包含缺失字段 |
 | bad02 | 入口不存在 | 报错并结束；不生成 {TreeID}.json；错误信息包含函数名 |
+| bad03 | para_index 越界 | 报错并结束；不生成 bad03.json；错误信息指出 para_index 越界（校验项 7，2 个形参对应合法索引 0/1） |
 
 ## 运行前注意
 
