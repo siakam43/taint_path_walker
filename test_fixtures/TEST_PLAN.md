@@ -37,7 +37,7 @@ project_dir = test_fixtures/project、entry_json = test_fixtures/entries/<用例
 | m03 | entry_fanout | 20 条链 [entry_fanout, op_00..op_19]；state 截断记录含 op_20（验收以最终输出为准；中间终态可能含单元素 [entry_fanout]，被去重移除，非缺陷） |
 | m04 | entry_cycle | 链 [entry_cycle, cyc_a, cyc_b]；state 环终止记录；不再延伸（cyc_a 锚定定义行 cycle.c:8，不得锚到第 1 行原型声明） |
 | m05 | entry_ext | 单元素链 [entry_ext]；state untraceable 含 vendor_crypto_sign（reason=源码缺失，tried 非空） |
-| resume | c01 | 完成态 state + 删除输出后重跑：输出与直跑一致（走恢复路径）；构造半成品 state（末条终态路径移回 queue）重跑：输出仍与直跑一致 |
+| resume | c01 | 完成态 state + 删除输出后重跑：输出与直跑一致（走恢复路径）；构造半成品 state（末条终态路径移回 queue）并删除输出后重跑：输出仍与直跑一致 |
 | bad01 | 缺 form | 报错并结束；不生成 {TreeID}.json；错误信息包含缺失字段 |
 | bad02 | 入口不存在 | 报错并结束；不生成 {TreeID}.json；错误信息包含函数名 |
 | bad03 | para_index 越界 | 报错并结束；不生成 bad03.json；错误信息指出 para_index 越界（校验项 7，2 个形参对应合法索引 0/1） |
