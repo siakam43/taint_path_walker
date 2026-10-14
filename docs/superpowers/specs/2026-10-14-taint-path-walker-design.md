@@ -257,11 +257,13 @@ api-cleaner 输出 `api_clean.json` 的一条，例如：
   "queue": [ {"path": [1, 2], "frontier": {"func_id": 2, "tainted_vars": ["data"]}, "status": "pending|in_progress"} ],
   "terminal_paths": [ {"path": [1, 2, 3], "end_reason": "传播停止|离开项目|深度截断|扇出截断|环终止"} ],
   "untraceable": [ {"func": "...", "line": "...", "target": "...", "reason": "源码缺失|目标不可确定", "tried": ["搜索方式1", "搜索方式2"]} ],
+  "truncations": [ {"func": "...", "line": "...", "to": "..."} ],
   "dispatch_cache": [ {"site": "src/a.cpp:45", "candidates": ["..."], "resolved": true} ]
 }
 ```
 
-- **end_reason 取值说明**："离开项目"含项目外无源码、目标不可确定的无法追踪终止（明细见 `untraceable`）；"深度截断"/"扇出截断"为上限截断（明细见截断记录）。
+- **end_reason 取值说明**："离开项目"含项目外无源码、目标不可确定的无法追踪终止（明细见 `untraceable`）；"深度截断"/"扇出截断"为上限截断（明细见 `truncations`）。
+- 截断明细（函数名+行号+传播去向）记入 `truncations`，与 `terminal_paths` 的"深度截断"/"扇出截断"对应。
 - **保存时机**：每处理完一个工作项（扩展完毕、子项入队、标终态）立即落盘。
 - **产出**：`terminal_paths` 是已完成链的原料，末尾统一做子序列去重 + 排序 + 组装输出。
 

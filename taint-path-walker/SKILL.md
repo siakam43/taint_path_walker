@@ -447,6 +447,7 @@ find <project_dir> -type f \( -name "*.c" -o -name "*.h" -o -name "*.cpp" -o -na
   "queue": [ {"path": [1, 2], "frontier": {"func_id": 2, "tainted_vars": ["data"]}, "status": "pending|in_progress"} ],
   "terminal_paths": [ {"path": [1, 2, 3], "end_reason": "传播停止|离开项目|深度截断|扇出截断|环终止"} ],
   "untraceable": [ {"func": "...", "line": "...", "target": "...", "reason": "源码缺失|目标不可确定", "tried": ["搜索方式1", "搜索方式2"]} ],
+  "truncations": [ {"func": "...", "line": "...", "to": "..."} ],
   "dispatch_cache": [ {"site": "src/a.cpp:45", "candidates": ["..."], "resolved": true} ]
 }
 ```
@@ -464,9 +465,10 @@ find <project_dir> -type f \( -name "*.c" -o -name "*.h" -o -name "*.cpp" -o -na
 | `queue` | 工作项队列（4.2 工作队列的持久化）：`path` 链前缀（节点 id 序列）、`frontier.func_id` 当前函数节点 id、`frontier.tainted_vars` 污点变量前沿、`status` 为 `pending` / `in_progress` |
 | `terminal_paths` | 终态路径集合（4.5 终态记录）：`path` 节点 id 序列、`end_reason` 取值见下；是 5.3 组装输出的原材料 |
 | `untraceable` | 无法追踪清单（4.2 步骤 3、4.5）：`func` 函数、`line` 行号、`target` 目标、`reason`（`源码缺失` / `目标不可确定`）、`tried`（已尝试的搜索方式） |
+| `truncations` | 上限截断明细（函数名 + 行号 + 传播去向），深度截断与扇出截断逐条记录于此；`terminal_paths` 中对应 end_reason 为"深度截断"/"扇出截断" |
 | `dispatch_cache` | 分发点解析缓存（4.3 第 2 项）：`site`、`candidates`、`resolved`；同一分发点不重复枚举 |
 
-**`end_reason` 取值说明**：`传播停止`（污点消亡或被非污点值覆盖）；`离开项目`（含项目外无源码、目标不可确定的无法追踪终止，明细见 `untraceable`）；`深度截断` / `扇出截断`（上限截断，明细见截断记录——对应终态条目附函数名 + 行号 + 传播去向，见 4.4）；`环终止`（同链函数定义重复出现）。
+**`end_reason` 取值说明**：`传播停止`（污点消亡或被非污点值覆盖）；`离开项目`（含项目外无源码、目标不可确定的无法追踪终止，明细见 `untraceable`）；`深度截断` / `扇出截断`（上限截断，明细见 `truncations`——对应终态条目附函数名 + 行号 + 传播去向，见 4.4）；`环终止`（同链函数定义重复出现）。
 
 **产出衔接**：`terminal_paths` 是已完成链的原料；追踪结束后按 5.3 统一做子序列去重 + 排序 + 组装输出。
 
@@ -484,6 +486,7 @@ find <project_dir> -type f \( -name "*.c" -o -name "*.h" -o -name "*.cpp" -o -na
    - `phase = tracing`：从 `queue` 中第一个 `in_progress` / `pending` 工作项继续（按 4.2 处理该工作项起）；`queue` 已空 → 全部工作项处理完毕，按 4.5 自检后置 `phase = done` 并进入输出阶段。
    - `phase = done`：追踪已完成 → 跳过追踪，直接进入第五章输出流程（此时输出文件缺失即为补做输出）。
    - **交叉校验**：加载后交叉校验 `queue` + `terminal_paths` 与 `tree` 规模自洽（如引用到的节点 id 均在 `tree.nodes` 中、`tree.edges` 的 `call_sites` 与推进状态对应）；不一致时**以 state 实际内容为准**续跑，不做猜测性修复、不清空重来。
+   - 恢复时如某个前沿变量的记录与对应函数 F 的上下文不符（如在 F 内不存在该变量），按该工作项入边 `call_sites.taint_args` 重置前沿后再续跑，不得据此丢弃工作项。
 4. **④ 都不存在 → 全新启动**：创建目录（2.5）、按第三章标记初始污点、初始化状态文件（写入 `tree_id`、`entry` 原文、`taint_marks`、`phase = tracing`、入口节点（id 为 1）与初始工作项），随后按 4.2 开始追踪。
 
 **收尾**：输出写出后状态文件保留（不删除）——完成态 state（`phase = done`）支持"输出丢失后补做输出"与再次恢复，续跑结果应与直跑一致。
@@ -545,7 +548,7 @@ codegraph 未安装/未配置 MCP → 用常规工具（grep / find / Read / ast
 | "这段代码看起来像漏洞，记下来" | 本 skill 不判定漏洞，只产出污点树（见第一章边界声明、第十章） |
 | "分支太多先记主路径，短的略过" | 上限内不得遗漏分支；被去重吞掉的短链的调用点信息须合并到幸存链的 `calls`（见 5.2 规则 6） |
 | "状态文件等整条链完成再存" | 每个工作项处理完立即落盘（见 6.1 保存时机） |
-| "被调函数没有污点形参（如 `rb.get()`、`tag_sink(t)` 走成员态），这条调用不建边" | 必须建边；`taint_args` 记空数组（情形②）或成员承载的实参名（见 4.2） |
+| "被调函数没有污点形参，这条调用不建边"（如 `rb.get()` 经接收对象成员态进入） | 必须建边——污点经接收对象成员态进入且被调函数无污点形参时，`taint_args` 记空数组（4.2 情形②）；经形参（含成员承载污点的形参，如 `tag_sink(Tag t)`）进入时，按形参名记入 `taint_args`（如 `[t]`）。 |
 | "基类指针上的调用就直接锚基类实现 / make_shared 是基类句柄所以按不可枚举" | 先判静态可确定、再枚举；双向误判都会破坏验收（见 4.3 判定口径） |
 | "到第 10 层 / 第 20 个候选就算结束" | 截断 ≠ 终止；其余分支照常追踪，截断必写记录（见 4.4） |
 | "这个参数只是标志位，剔除吧" | 仅当确认其值在本函数内不流入任何其他位置才可剔除，存疑保留（见 3.1 常量类参数） |
