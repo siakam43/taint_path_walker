@@ -1,0 +1,45 @@
+# 原始需求
+参考skill路径：
+/home/admin/cc/wksp/siakam_security_skills/api_finder/api-finder
+/home/admin/cc/wksp/siakam_security_skills/api_finder/api-cleaner
+/home/admin/cc/wksp/siakam_security_skills/taint_path_checker/taint-tree-checker
+
+## 整体说明
+1 我需要开发一个单纯由markdown文档组成的skill，名字叫taint-path-walker。 在当前路径创建一个taint-path-walker文件夹，在文件夹内部创建SKILL.md文档。承载接下来的开发内容。
+2 核心功能: 根据输入的接口函数和污点source参数，追踪污点传播路径，生成和污点传播相关的call graph，即污点树。 重点是要求可以处理c++代码
+3 SKILL风格和taint-tree-checker保持一致
+
+## 流程与架构
+### 工具输入
+1 SKILL使用方法：/taint-path-walker <project_dir>
+2 确定代码分析范围：逻辑和api-finder一致，但要注意，本skill分析范围需包含c++代码（api-finder只分析c语言代码）
+3 初始化输出路径，没有文件夹则创建：project_dir/.ethunter_out/taint-path-walker
+4 工具的输入是一个json文件，名字为{TreeID}_entry.json。 里面的内容为api-cleaner skill的输出文件api_clean.json中的一条数据，例如：{"name": "func_a", "file": "/abs/path/to/a.c", "form": "parameter_input", "taint_data": "data/len", "local_module": "ISP 固件", "partner_module": "用户态 APP", "para_index": "1/2"}。 这里TreeID是根据函数名和函数所在文件计算的hash，由输入提供，输出文件也沿用此TreeID。
+
+
+### 任务恢复
+如果之前分析异常中断，根据已有的中间结果，resume分析。
+
+###污点树生成
+1 污点树生成逻辑可以参考taint-tree-checker skill的第四章“污点数据追踪”，流程差不多，区别是taint-tree-checker会有一个污点树作为参考，之后修复。本skill只有入口函数和初始污点，自行污点追踪。
+2 具体流程我再简单进行说明：
+（1）初始化污点标记，输入文件中会标记好污点参数，skill需要额外筛选一下，排除内部参数。
+（2）追踪污点传播，包括污点传播路线中的具体函数调用点及参数、执行的条件分支、污点在变量间的传递过程等信息，注意不要断链，最后需要再自检一遍。
+（3）污点树的记录：设置追踪上限和扇出上限，不到上限不要自行停止。 同时调用链结果需要去重，这里我们使用包含去重的机制：例如有3条链，a > b > c;  a >b ; a>c。 第二条和第三条都可以算第一条的子链，在记录树时可以只记录第一条即可，这里主要目的是防止路径爆炸。
+注意，taint-tree-checker skill的第四章的流程比较混乱，所以在4.3专门有一个“污点传播数据流路线构建流程”小节用来串联各章节。本skill需注意，直接理顺逻辑，不要再刻意串联。
+
+
+3 特别注意，本skill特殊之处在于处理c++特性的能力，在污点分析时，要考虑c++的独有特性，例如虚函数，多态的等，尽可能保证污点传播不断链。这一步是本skill的研发重点，需要建立对应的测试集，尽量保证功能的准确性和全面性。
+4 输出件是<project_dir>/.ethunter_out/taint-path-walker/{TreeID}.json，格式与内容和taint-tree-checker skill的输入文件保持一致（多条调用链）。且该输出件后续就会作为taint-tree-checker skill的输入。 除此之外，每条调用链额外增加一些信息，记录一下函数间的调用点(可能有多个调用点，例如a函数多次调用b函数，且都传入了污点数据)。例如调用链是函数 a > b > c，需要额外记录a在哪一行代码调用了b，且传入的污点形参是什么。
+
+
+
+
+## 要求
+1 需要使用代码仓探索的常用工具，SKILL应提前申请权限。 当project_dir/.codegraph存在时，还需要使用mcp工具codegraph，但如果环境中没有安装codegraph或没配置mcp，不要中断分析，使用常规工具即可。
+2 整个skill的提示词都用中文。 注意相同语义的用词前后保持一致。
+3 本skill包含长任务（多个待分析接口），提示词应通过规范方式防止任务遗忘，必要时要保存中间结果，方便断点续分析。
+4 全部任务由主agent完成，不需要sub-agent并行分析。 
+6 skill适用业务：适用于嵌入式系统的HAL层代码（硬件抽象层），HAL层处于用户态，向上和嵌入式操作系统（例如android或鸿蒙）service对接，向下和内核kernel对接，主要业务逻辑为驱动代码。
+7 整个skill在处理c++函数名时，要注意作用域，函数名最好附带前面的作用域。
+8 c++可能还有特别之处我没有注意到，在做设计时应尽量考虑完备。
