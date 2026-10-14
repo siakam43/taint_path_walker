@@ -808,8 +808,8 @@ project_dir = test_fixtures/project、entry_json = test_fixtures/entries/<用例
 | cpp09 | isp::hal::entry_mi | 恰好 2 条链：DualUnit::on_ctrl 与 CtrlBase::on_ctrl（多重继承合并 + 基类默认实现） |
 | m01 | m_entry | 输出恰好 1 条链 [m_entry, m_b, m_leaf_c]；m_entry.calls 含 m_b 与 m_leaf_c 两个调用点条目 |
 | m02 | entry_deep | 链 [entry_deep, deep0..deep8] 长度恰 10；state 截断记录含 deep8->deep9 |
-| m03 | entry_fanout | 20 条链 [entry_fanout, op_00..op_19]；state 截断记录含 op_20 |
-| m04 | entry_cycle | 链 [entry_cycle, cyc_a, cyc_b]；state 环终止记录；不再延伸 |
+| m03 | entry_fanout | 20 条链 [entry_fanout, op_00..op_19]；state 截断记录含 op_20（验收以最终输出为准；中间终态可能含单元素 [entry_fanout]，被去重移除，非缺陷） |
+| m04 | entry_cycle | 链 [entry_cycle, cyc_a, cyc_b]；state 环终止记录；不再延伸（cyc_a 锚定定义行 cycle.c:8，不得锚到第 1 行原型声明） |
 | m05 | entry_ext | 单元素链 [entry_ext]；state untraceable 含 vendor_crypto_sign（reason=源码缺失，tried 非空） |
 | resume | c01 | 完成态 state + 删除输出后重跑：输出与直跑一致（走恢复路径）；构造半成品 state（末条终态路径移回 queue）重跑：输出仍与直跑一致 |
 | bad01 | 缺 form | 报错并结束；不生成 {TreeID}.json；错误信息包含缺失字段 |
