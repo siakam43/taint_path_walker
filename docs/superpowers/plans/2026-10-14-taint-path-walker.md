@@ -800,9 +800,9 @@ project_dir = test_fixtures/project、entry_json = test_fixtures/entries/<用例
 | cpp01 | isp::hal::bus_send | 分发点解析出 4 个候选：BusBase::transfer、SpiBus::transfer、I2cBus::transfer、UartBus::transfer；输出 4 条链 |
 | cpp02 | isp::hal::bus_send_static | 恰好 1 条链 [bus_send_static, SpiBus::transfer]；不得出现其他覆写或基类 |
 | cpp03 | isp::util::entry_overload | 3 条链，convert 三个重载各一条（按 begin_line 区分）；callee 同名不被误合并 |
-| cpp04 | isp::util::entry_template | 链含 RingBuf::put、RingBuf::get、clamp_val（定义处限定名，不写 <int> 等实例化参数） |
-| cpp05 | isp::hal::entry_frame | 4 条链，分别指向 Frame::Frame(3参)构造、Frame::Frame(拷贝)构造、Frame::operator=、Frame::operator[]；两个构造按 begin_line 区分 |
-| cpp06 | isp::hal::entry_implicit | 链含 Tag::Tag（隐式转换构造）与 tag_sink |
+| cpp04 | isp::util::entry_template | 3 条兄弟链：entry_template→RingBuf::put（taint_args [v]）、→clamp_val（[v]）、→RingBuf::get（[]，污点经接收对象成员态进入）；定义处限定名，不写 <int> 等实例化参数 |
+| cpp05 | isp::hal::entry_frame | 4 条链，分别指向 Frame::Frame(3参)构造、Frame::Frame(拷贝)构造、Frame::operator=、Frame::operator[]；两个构造按 begin_line 区分；不传污点的构造调用点（Frame h(0,"",0) 所在行）不得进入 calls |
+| cpp06 | isp::hal::entry_implicit | 2 条兄弟链：[entry_implicit, Tag::Tag]（隐式转换构造，taint_args [v]）与 [entry_implicit, tag_sink]（[t]），两条边源于同一调用行 |
 | cpp07 | isp::hal::entry_smart | s->feed 精确解析为 LogSink::feed（唯一目标，不得枚举 Sink::feed）；pkt-> 成员写入经穿透处理（不得出现 shared_ptr::operator-> 节点） |
 | cpp08 | isp::hal::entry_lambda | lambda 节点名形如 <lambda@cpp/smart_lambda.cpp:行号>；calls.taint_args 为空数组（污点经捕获传入） |
 | cpp09 | isp::hal::entry_mi | 恰好 2 条链：DualUnit::on_ctrl 与 CtrlBase::on_ctrl（多重继承合并 + 基类默认实现） |
@@ -910,7 +910,7 @@ description: 使用命令 /taint-path-walker <project_dir> <entry_json> 触发�
 
 - 工作项定义 = （链前缀 path，当前函数 F，F 内污点变量前沿 frontier）；初始工作项 = （`[入口]`，入口函数，初始污点集合）。
 - 处理流程（编号列出）：完整阅读 F 全部代码（含所有分支）→ 对 frontier 每个污点变量追踪函数内传播（赋值/成员/指针/引用/分支）→ 按四种去向处理：传污点给函数 g 的调用点 → 建调用边（F→g、行号、taint_args）并入队新工作项；污点消亡（被非污点值覆盖/不再使用）→ 支线截止于 F；分发点 → 先解析候选（见 4.3 规则与上限）再逐一入队；项目外无源码/目标不可解析 → 记"无法追踪清单"（含已尝试的搜索方式），链截止于本函数。
-- 调用点集合的归属：元素 X 的 `calls` 收录 X 向本链中位于 X 之后的全部元素的传污点调用点（同一后继的多次调用合并、按行号升序）；`callee` 取相应后继元素的限定名（含被去重吞并的直调边）。`taint_args` 为空数组的两种合法情形（污点经全局/静态变量进入；污点经 lambda 捕获进入）。
+- 调用点集合的归属：元素 X 的 `calls` 收录 X 向本链中位于 X 之后的全部元素的传污点调用点（同一后继的多次调用合并、按行号升序）；`callee` 取相应后继元素的限定名（含被去重吞并的直调边）。`taint_args` 为空数组的三种合法情形（污点经全局/静态变量进入；污点经接收对象成员态进入且被调函数无污点形参；污点经 lambda 捕获进入）。
 - 路径→树→链：叶节点路径构成污点树；全部工作项处理后，叶路径即候选链。
 - 防环：同一链中出现相同函数定义（同 file+begin_line）→ 停止延伸该分支，记录"环终止"。
 - **校验不终止传播**：值经校验/净化后仍来源于外部输入，继续追踪；仅当被非污点值覆盖或消亡才终止。
@@ -945,7 +945,7 @@ description: 使用命令 /taint-path-walker <project_dir> <entry_json> 触发�
 先读设计文档 §6。须逐字包含输出 JSON 示例（§6 示例原文），并把 10 条规则清单转写为提示词规则。补充明确（本次计划新增的澄清，必须写入）：
 
 - 去重的序列比较基于**链元素三元组（func, file, begin_line）**，不是仅函数名——例如同名重载的两个不同函数不得被误判为同序列。
-- `taint_args` 可为空数组（两种情形见 4.2）。
+- `taint_args` 可为空数组（三种情形见 4.2：全局/静态变量、接收对象成员态、lambda 捕获）。
 - `calls` 归属语义：元素 X 收录 X 向本链中位于 X 之后的全部元素的传污点调用点；`callee` 取本链中相应后继元素的限定名（含被去重吞并的直调边）。
 - 单元素链合法（`[[入口]]`）。
 - 链排序：按逐元素 `file:begin_line` 序列字典序升序。
