@@ -88,7 +88,7 @@ st["counters"]["terminal_paths"] = len(st["terminal_paths"])
 json.dump(st, open(p, "w"), ensure_ascii=False, indent=4)
 ```
 
-注释说明：`tainted_vars` 来自该工作项入边的 `call_sites.taint_args`（§6.2 前沿重建）；c01 实测回卷 `[1,5]`（frontier func_id=5、tainted_vars=[]）。然后：
+注释说明：`tainted_vars` 来自该工作项入边的 `call_sites.taint_args`（§6.2 前沿重建）。`terminal_paths` 为发现顺序、不排序，因此"最后一条"随运行实例而异，脚本动态取之即可；实测样例：`[1,5]`（frontier func_id=5、tainted_vars=[]）或 `[1,2,3]`（func_id=3、tainted_vars=["len"]）。关键验收 = 回卷重跑后输出与直跑一致（RESUME_MID_OK），不绑定具体回卷取值。然后：
 
 ```bash
 # B3 续：删输出 → 重跑 → 核验回卷恢复输出
