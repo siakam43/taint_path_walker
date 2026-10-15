@@ -1,0 +1,24 @@
+{
+    "tree_id": "c04",
+    "entry": {"name": "hal_cfg_apply2", "file": "/home/admin/cc/wksp/siakam_security_skills/taint_path_walker/test_fixtures/project/c/c_filter.c", "form": "parameter_input", "taint_data": "flags/data/len", "local_module": "ISP 固件", "partner_module": "用户态 APP", "para_index": "0/1/2"},
+    "taint_marks": [{"var": "data", "kind": "param", "index": 1}, {"var": "len", "kind": "param", "index": 2}],
+    "filtered_marks": [{"var": "flags", "kind": "param", "index": 0, "reason": "常量类参数（3.1 内部参数二次过滤）：仅与固定值位测试 ((flags & 0x0F) == 0x01)，值未流入其他位置，剔除不追踪"}],
+    "phase": "done",
+    "tree": {
+        "nodes": [
+            {"id": 1, "func": "hal_cfg_apply2", "file": "c/c_filter.c", "begin_line": "8"},
+            {"id": 2, "func": "c04_sink", "file": "c/c_filter.c", "begin_line": "3"}
+        ],
+        "edges": [
+            {"from": 1, "to": 2, "call_sites": [{"line": "13", "taint_args": ["p", "n"]}]}
+        ]
+    },
+    "queue": [],
+    "terminal_paths": [
+        {"path": [1, 2], "end_reason": "传播停止"}
+    ],
+    "untraceable": [],
+    "truncations": [],
+    "dispatch_cache": [],
+    "counters": {"queue_remaining": 0, "terminal_paths": 1, "max_depth": 2}
+}

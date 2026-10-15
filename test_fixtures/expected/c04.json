@@ -1,0 +1,15 @@
+{
+    "hal_cfg_apply2$c04": [
+        [
+            {
+                "func": "hal_cfg_apply2",
+                "file": "c/c_filter.c",
+                "begin_line": "8",
+                "calls": [
+                    {"callee": "c04_sink", "line": "13", "taint_args": ["p", "n"]}
+                ]
+            },
+            {"func": "c04_sink", "file": "c/c_filter.c", "begin_line": "3"}
+        ]
+    ]
+}

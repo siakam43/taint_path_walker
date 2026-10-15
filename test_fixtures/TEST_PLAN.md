@@ -22,7 +22,7 @@ test_fixtures/expected/   # 验收通过后录制的基线 {TreeID}.json
 
 ## 基线说明
 
-`test_fixtures/expected/` 为 2026-10-14 录制、19 用例全部验收通过版本的产物；追踪由 LLM 执行、
+`test_fixtures/expected/` 为 2026-10-15 录制、18 个基线（c01–c04、cpp01–cpp09、m01–m05）全部验收通过版本的产物；用例表共 22 行（18 个正常用例 + resume 用例 + bad01–bad03 错误用例），resume 与错误用例不产出基线。追踪由 LLM 执行、
 输出非严格字节级确定，因此**主验收依据为用例表的验收点**，基线 JSON 作比对参考（比对有差异时
 逐项判定是否为 LLM 表述性差异；链集合与解析结论才是硬性标准）。
 
