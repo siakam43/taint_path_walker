@@ -69,6 +69,7 @@ TreeID = `{TreeID}_entry.json` 文件名去掉 `_entry.json` 后缀。由上游�
 - 输出目录：`<project_dir>/.ethunter_out/taint-path-walker/`（不存在则 `mkdir -p` 创建；创建失败降级到当前目录，确保有输出件）。
 - 最终输出：`{TreeID}.json`；中间状态：`tmp/{TreeID}_state.json`。
 - 预查重：`{TreeID}.json` 已存在 → 打印"该入口已有分析结果：{路径}，跳过分析。"并结束。支持上游重复调度。
+- 任务恢复检查：`tmp/{TreeID}_state.json` 存在 → 转入恢复流程（§8.2）断点续跑，不从头分析。
 
 ### 3.4 环境适配
 
@@ -88,7 +89,7 @@ TreeID = `{TreeID}_entry.json` 文件名去掉 `_entry.json` 后缀。由上游�
 | 节 | 内容 |
 |---|---|
 | 一 | 角色与任务概述（嵌入式 HAL 场景、C/C++、产物用途与下游关系、核心原则） |
-| 二 | 输入解析与初始化（参数、entry json 校验、TreeID、输出目录、预查重、macro.json、codegraph 检测、路径规范、分析范围确定） |
+| 二 | 输入解析与初始化（参数、entry json 校验、TreeID、输出目录、预查重、任务恢复检查、macro.json、codegraph 检测、路径规范、分析范围确定） |
 | 三 | 初始污点标记（para_index/taint_data → 起始污点、内部参数二次过滤、channel_read 情形、全局/静态变量共享规则） |
 | 四 | 污点追踪与污点树生成（工作队列模型、污点传播模式、C++ 特性处理专节、分发点解析、追踪上限、子序列去重、完整性与自检） |
 | 五 | 输出（`{TreeID}.json` 完整 schema、示例、写盘规则） |
@@ -268,6 +269,8 @@ api-cleaner 输出 `api_clean.json` 的一条，例如：
 - **产出**：`terminal_paths` 是已完成链的原料，末尾统一做子序列去重 + 排序 + 组装输出。
 
 ### 8.2 恢复流程（入口四分支）
+
+入口：由第二章 2.5 的任务恢复检查进入；分支 ①/② 与 2.3–2.4 / 2.5.3 为同一判定。
 
 1. 校验输入（第 5 节规则）。
 2. `{TreeID}.json` 已存在 → 打印跳过提示并结束。
