@@ -1,0 +1,7 @@
+{
+    "entry_ext$m05": [
+        [
+            {"func": "entry_ext", "file": "mech/external.c", "begin_line": "3"}
+        ]
+    ]
+}

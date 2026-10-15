@@ -1,0 +1,37 @@
+{
+    "isp::util::entry_template$cpp04": [
+        [
+            {
+                "func": "isp::util::entry_template",
+                "file": "cpp/templates.cpp",
+                "begin_line": "15",
+                "calls": [
+                    {"callee": "isp::util::clamp_val", "line": "19", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "isp::util::clamp_val", "file": "cpp/templates.cpp", "begin_line": "13"}
+        ],
+        [
+            {
+                "func": "isp::util::entry_template",
+                "file": "cpp/templates.cpp",
+                "begin_line": "15",
+                "calls": [
+                    {"callee": "isp::util::RingBuf::put", "line": "18", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "isp::util::RingBuf::put", "file": "cpp/templates.cpp", "begin_line": "6"}
+        ],
+        [
+            {
+                "func": "isp::util::entry_template",
+                "file": "cpp/templates.cpp",
+                "begin_line": "15",
+                "calls": [
+                    {"callee": "isp::util::RingBuf::get", "line": "20", "taint_args": []}
+                ]
+            },
+            {"func": "isp::util::RingBuf::get", "file": "cpp/templates.cpp", "begin_line": "7"}
+        ]
+    ]
+}

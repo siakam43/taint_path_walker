@@ -1,0 +1,26 @@
+{
+    "isp::hal::entry_implicit$cpp06": [
+        [
+            {
+                "func": "isp::hal::entry_implicit",
+                "file": "cpp/ctor_conv.cpp",
+                "begin_line": "62",
+                "calls": [
+                    {"callee": "isp::hal::Tag::Tag", "line": "64", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "isp::hal::Tag::Tag", "file": "cpp/ctor_conv.cpp", "begin_line": "53"}
+        ],
+        [
+            {
+                "func": "isp::hal::entry_implicit",
+                "file": "cpp/ctor_conv.cpp",
+                "begin_line": "62",
+                "calls": [
+                    {"callee": "isp::hal::tag_sink", "line": "64", "taint_args": ["t"]}
+                ]
+            },
+            {"func": "isp::hal::tag_sink", "file": "cpp/ctor_conv.cpp", "begin_line": "57"}
+        ]
+    ]
+}

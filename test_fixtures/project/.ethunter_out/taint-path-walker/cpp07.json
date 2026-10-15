@@ -1,0 +1,15 @@
+{
+    "isp::hal::entry_smart$cpp07": [
+        [
+            {
+                "func": "isp::hal::entry_smart",
+                "file": "cpp/smart_lambda.cpp",
+                "begin_line": "32",
+                "calls": [
+                    {"callee": "isp::hal::LogSink::feed", "line": "41", "taint_args": ["p", "n"]}
+                ]
+            },
+            {"func": "isp::hal::LogSink::feed", "file": "cpp/smart_lambda.cpp", "begin_line": "27"}
+        ]
+    ]
+}

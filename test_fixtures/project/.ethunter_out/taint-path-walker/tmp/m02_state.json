@@ -1,0 +1,41 @@
+{
+    "tree_id": "m02",
+    "entry": {"name": "entry_deep", "file": "/home/admin/cc/wksp/siakam_security_skills/taint_path_walker/test_fixtures/project/mech/limits.cpp", "form": "parameter_input", "taint_data": "v", "local_module": "ISP 固件", "partner_module": "用户态 APP", "para_index": "0"},
+    "taint_marks": [{"var": "v", "kind": "param", "index": 0}],
+    "phase": "done",
+    "tree": {
+        "nodes": [
+            {"id": 1, "func": "entry_deep", "file": "mech/limits.cpp", "begin_line": "16"},
+            {"id": 2, "func": "deep0", "file": "mech/limits.cpp", "begin_line": "14"},
+            {"id": 3, "func": "deep1", "file": "mech/limits.cpp", "begin_line": "13"},
+            {"id": 4, "func": "deep2", "file": "mech/limits.cpp", "begin_line": "12"},
+            {"id": 5, "func": "deep3", "file": "mech/limits.cpp", "begin_line": "11"},
+            {"id": 6, "func": "deep4", "file": "mech/limits.cpp", "begin_line": "10"},
+            {"id": 7, "func": "deep5", "file": "mech/limits.cpp", "begin_line": "9"},
+            {"id": 8, "func": "deep6", "file": "mech/limits.cpp", "begin_line": "8"},
+            {"id": 9, "func": "deep7", "file": "mech/limits.cpp", "begin_line": "7"},
+            {"id": 10, "func": "deep8", "file": "mech/limits.cpp", "begin_line": "6"}
+        ],
+        "edges": [
+            {"from": 1, "to": 2, "call_sites": [{"line": "18", "taint_args": ["v"]}]},
+            {"from": 2, "to": 3, "call_sites": [{"line": "14", "taint_args": ["v"]}]},
+            {"from": 3, "to": 4, "call_sites": [{"line": "13", "taint_args": ["v"]}]},
+            {"from": 4, "to": 5, "call_sites": [{"line": "12", "taint_args": ["v"]}]},
+            {"from": 5, "to": 6, "call_sites": [{"line": "11", "taint_args": ["v"]}]},
+            {"from": 6, "to": 7, "call_sites": [{"line": "10", "taint_args": ["v"]}]},
+            {"from": 7, "to": 8, "call_sites": [{"line": "9", "taint_args": ["v"]}]},
+            {"from": 8, "to": 9, "call_sites": [{"line": "8", "taint_args": ["v"]}]},
+            {"from": 9, "to": 10, "call_sites": [{"line": "7", "taint_args": ["v"]}]}
+        ]
+    },
+    "queue": [],
+    "terminal_paths": [
+        {"path": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "end_reason": "深度截断"}
+    ],
+    "untraceable": [],
+    "truncations": [
+        {"func": "deep8", "line": "6", "to": "deep9"}
+    ],
+    "dispatch_cache": [],
+    "counters": {"queue_remaining": 0, "terminal_paths": 1, "max_depth": 10}
+}

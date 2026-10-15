@@ -1,0 +1,24 @@
+{
+    "m_entry$m01": [
+        [
+            {
+                "func": "m_entry",
+                "file": "mech/dedup.c",
+                "begin_line": "11",
+                "calls": [
+                    {"callee": "m_b", "line": "13", "taint_args": ["v"]},
+                    {"callee": "m_leaf_c", "line": "14", "taint_args": ["v"]}
+                ]
+            },
+            {
+                "func": "m_b",
+                "file": "mech/dedup.c",
+                "begin_line": "6",
+                "calls": [
+                    {"callee": "m_leaf_c", "line": "8", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "m_leaf_c", "file": "mech/dedup.c", "begin_line": "1"}
+        ]
+    ]
+}

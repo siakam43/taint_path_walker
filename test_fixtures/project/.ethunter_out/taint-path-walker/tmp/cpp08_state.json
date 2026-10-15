@@ -1,0 +1,23 @@
+{
+    "tree_id": "cpp08",
+    "entry": {"name": "isp::hal::entry_lambda", "file": "/home/admin/cc/wksp/siakam_security_skills/taint_path_walker/test_fixtures/project/cpp/smart_lambda.cpp", "form": "parameter_input", "taint_data": "data/len", "local_module": "ISP 固件", "partner_module": "Sensor 总线", "para_index": "0/1"},
+    "taint_marks": [{"var": "data", "kind": "param", "index": 0}, {"var": "len", "kind": "param", "index": 1}],
+    "phase": "done",
+    "tree": {
+        "nodes": [
+            {"id": 1, "func": "isp::hal::entry_lambda", "file": "cpp/smart_lambda.cpp", "begin_line": "44"},
+            {"id": 2, "func": "<lambda@cpp/smart_lambda.cpp:46>", "file": "cpp/smart_lambda.cpp", "begin_line": "46"}
+        ],
+        "edges": [
+            {"from": 1, "to": 2, "call_sites": [{"line": "49", "taint_args": []}]}
+        ]
+    },
+    "queue": [],
+    "terminal_paths": [
+        {"path": [1, 2], "end_reason": "传播停止"}
+    ],
+    "untraceable": [],
+    "truncations": [],
+    "dispatch_cache": [],
+    "counters": {"queue_remaining": 0, "terminal_paths": 1, "max_depth": 2}
+}

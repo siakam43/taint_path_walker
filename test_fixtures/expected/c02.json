@@ -1,0 +1,15 @@
+{
+    "hal_poll_shared$c02": [
+        [
+            {
+                "func": "hal_poll_shared",
+                "file": "c/c_channel.c",
+                "begin_line": "16",
+                "calls": [
+                    {"callee": "hal_process_cmd", "line": "22", "taint_args": ["p", "n"]}
+                ]
+            },
+            {"func": "hal_process_cmd", "file": "c/c_channel.c", "begin_line": "11"}
+        ]
+    ]
+}

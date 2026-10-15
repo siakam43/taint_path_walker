@@ -1,0 +1,15 @@
+{
+    "isp::hal::bus_send_static$cpp02": [
+        [
+            {
+                "func": "isp::hal::bus_send_static",
+                "file": "cpp/vtable.cpp",
+                "begin_line": "42",
+                "calls": [
+                    {"callee": "isp::hal::SpiBus::transfer", "line": "45", "taint_args": ["data", "len"]}
+                ]
+            },
+            {"func": "isp::hal::SpiBus::transfer", "file": "cpp/vtable.cpp", "begin_line": "15"}
+        ]
+    ]
+}

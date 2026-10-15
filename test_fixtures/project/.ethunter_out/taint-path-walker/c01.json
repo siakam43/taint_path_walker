@@ -1,0 +1,46 @@
+{
+    "hal_apply_cfg$c01": [
+        [
+            {
+                "func": "hal_apply_cfg",
+                "file": "c/c_base.c",
+                "begin_line": "33",
+                "calls": [
+                    {"callee": "hal_cfg_step1", "line": "36", "taint_args": ["mode"]},
+                    {"callee": "hal_cfg_step2", "line": "37", "taint_args": ["len"]}
+                ]
+            },
+            {
+                "func": "hal_cfg_step1",
+                "file": "c/c_base.c",
+                "begin_line": "22",
+                "calls": [
+                    {"callee": "hal_cfg_step2", "line": "25", "taint_args": ["len"]}
+                ]
+            },
+            {"func": "hal_cfg_step2", "file": "c/c_base.c", "begin_line": "13"}
+        ],
+        [
+            {
+                "func": "hal_apply_cfg",
+                "file": "c/c_base.c",
+                "begin_line": "33",
+                "calls": [
+                    {"callee": "hal_cfg_check", "line": "39", "taint_args": []}
+                ]
+            },
+            {"func": "hal_cfg_check", "file": "c/c_base.c", "begin_line": "28"}
+        ],
+        [
+            {
+                "func": "hal_apply_cfg",
+                "file": "c/c_base.c",
+                "begin_line": "33",
+                "calls": [
+                    {"callee": "hal_cfg_step3", "line": "38", "taint_args": ["name"]}
+                ]
+            },
+            {"func": "hal_cfg_step3", "file": "c/c_base.c", "begin_line": "6"}
+        ]
+    ]
+}

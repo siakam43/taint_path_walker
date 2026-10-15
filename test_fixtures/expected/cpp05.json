@@ -1,0 +1,48 @@
+{
+    "isp::hal::entry_frame$cpp05": [
+        [
+            {
+                "func": "isp::hal::entry_frame",
+                "file": "cpp/ctor_conv.cpp",
+                "begin_line": "42",
+                "calls": [
+                    {"callee": "isp::hal::Frame::Frame", "line": "44", "taint_args": ["id", "data", "len"]}
+                ]
+            },
+            {"func": "isp::hal::Frame::Frame", "file": "cpp/ctor_conv.cpp", "begin_line": "13"}
+        ],
+        [
+            {
+                "func": "isp::hal::entry_frame",
+                "file": "cpp/ctor_conv.cpp",
+                "begin_line": "42",
+                "calls": [
+                    {"callee": "isp::hal::Frame::Frame", "line": "45", "taint_args": ["o"]}
+                ]
+            },
+            {"func": "isp::hal::Frame::Frame", "file": "cpp/ctor_conv.cpp", "begin_line": "22"}
+        ],
+        [
+            {
+                "func": "isp::hal::entry_frame",
+                "file": "cpp/ctor_conv.cpp",
+                "begin_line": "42",
+                "calls": [
+                    {"callee": "isp::hal::Frame::operator=", "line": "47", "taint_args": ["o"]}
+                ]
+            },
+            {"func": "isp::hal::Frame::operator=", "file": "cpp/ctor_conv.cpp", "begin_line": "30"}
+        ],
+        [
+            {
+                "func": "isp::hal::entry_frame",
+                "file": "cpp/ctor_conv.cpp",
+                "begin_line": "42",
+                "calls": [
+                    {"callee": "isp::hal::Frame::operator[]", "line": "48", "taint_args": ["i"]}
+                ]
+            },
+            {"func": "isp::hal::Frame::operator[]", "file": "cpp/ctor_conv.cpp", "begin_line": "37"}
+        ]
+    ]
+}

@@ -1,0 +1,26 @@
+{
+    "isp::hal::entry_mi$cpp09": [
+        [
+            {
+                "func": "isp::hal::entry_mi",
+                "file": "cpp/mi.cpp",
+                "begin_line": "31",
+                "calls": [
+                    {"callee": "isp::hal::CtrlBase::on_ctrl", "line": "33", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "isp::hal::CtrlBase::on_ctrl", "file": "cpp/mi.cpp", "begin_line": "11"}
+        ],
+        [
+            {
+                "func": "isp::hal::entry_mi",
+                "file": "cpp/mi.cpp",
+                "begin_line": "31",
+                "calls": [
+                    {"callee": "isp::hal::DualUnit::on_ctrl", "line": "33", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "isp::hal::DualUnit::on_ctrl", "file": "cpp/mi.cpp", "begin_line": "26"}
+        ]
+    ]
+}

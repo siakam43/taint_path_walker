@@ -1,0 +1,15 @@
+{
+    "isp::hal::entry_lambda$cpp08": [
+        [
+            {
+                "func": "isp::hal::entry_lambda",
+                "file": "cpp/smart_lambda.cpp",
+                "begin_line": "44",
+                "calls": [
+                    {"callee": "<lambda@cpp/smart_lambda.cpp:46>", "line": "49", "taint_args": []}
+                ]
+            },
+            {"func": "<lambda@cpp/smart_lambda.cpp:46>", "file": "cpp/smart_lambda.cpp", "begin_line": "46"}
+        ]
+    ]
+}

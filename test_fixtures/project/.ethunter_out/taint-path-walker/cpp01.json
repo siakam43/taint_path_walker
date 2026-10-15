@@ -1,0 +1,48 @@
+{
+    "isp::hal::bus_send$cpp01": [
+        [
+            {
+                "func": "isp::hal::bus_send",
+                "file": "cpp/vtable.cpp",
+                "begin_line": "37",
+                "calls": [
+                    {"callee": "isp::hal::SpiBus::transfer", "line": "39", "taint_args": ["data", "len"]}
+                ]
+            },
+            {"func": "isp::hal::SpiBus::transfer", "file": "cpp/vtable.cpp", "begin_line": "15"}
+        ],
+        [
+            {
+                "func": "isp::hal::bus_send",
+                "file": "cpp/vtable.cpp",
+                "begin_line": "37",
+                "calls": [
+                    {"callee": "isp::hal::I2cBus::transfer", "line": "39", "taint_args": ["data", "len"]}
+                ]
+            },
+            {"func": "isp::hal::I2cBus::transfer", "file": "cpp/vtable.cpp", "begin_line": "24"}
+        ],
+        [
+            {
+                "func": "isp::hal::bus_send",
+                "file": "cpp/vtable.cpp",
+                "begin_line": "37",
+                "calls": [
+                    {"callee": "isp::hal::UartBus::transfer", "line": "39", "taint_args": ["data", "len"]}
+                ]
+            },
+            {"func": "isp::hal::UartBus::transfer", "file": "cpp/vtable.cpp", "begin_line": "30"}
+        ],
+        [
+            {
+                "func": "isp::hal::bus_send",
+                "file": "cpp/vtable.cpp",
+                "begin_line": "37",
+                "calls": [
+                    {"callee": "isp::hal::BusBase::transfer", "line": "39", "taint_args": ["data", "len"]}
+                ]
+            },
+            {"func": "isp::hal::BusBase::transfer", "file": "cpp/vtable.cpp", "begin_line": "8"}
+        ]
+    ]
+}

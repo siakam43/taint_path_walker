@@ -1,0 +1,15 @@
+{
+    "hal_dispatch$c03": [
+        [
+            {
+                "func": "hal_dispatch",
+                "file": "c/c_channel.c",
+                "begin_line": "25",
+                "calls": [
+                    {"callee": "hal_process_cmd", "line": "31", "taint_args": ["p", "n"]}
+                ]
+            },
+            {"func": "hal_process_cmd", "file": "c/c_channel.c", "begin_line": "11"}
+        ]
+    ]
+}

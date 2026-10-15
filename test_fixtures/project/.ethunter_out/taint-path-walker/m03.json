@@ -1,0 +1,224 @@
+{
+    "entry_fanout$m03": [
+        [
+            {
+                "func": "entry_fanout",
+                "file": "mech/limits.cpp",
+                "begin_line": "52",
+                "calls": [
+                    {"callee": "op_00", "line": "54", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "op_00", "file": "mech/limits.cpp", "begin_line": "24"}
+        ],
+        [
+            {
+                "func": "entry_fanout",
+                "file": "mech/limits.cpp",
+                "begin_line": "52",
+                "calls": [
+                    {"callee": "op_01", "line": "54", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "op_01", "file": "mech/limits.cpp", "begin_line": "25"}
+        ],
+        [
+            {
+                "func": "entry_fanout",
+                "file": "mech/limits.cpp",
+                "begin_line": "52",
+                "calls": [
+                    {"callee": "op_02", "line": "54", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "op_02", "file": "mech/limits.cpp", "begin_line": "26"}
+        ],
+        [
+            {
+                "func": "entry_fanout",
+                "file": "mech/limits.cpp",
+                "begin_line": "52",
+                "calls": [
+                    {"callee": "op_03", "line": "54", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "op_03", "file": "mech/limits.cpp", "begin_line": "27"}
+        ],
+        [
+            {
+                "func": "entry_fanout",
+                "file": "mech/limits.cpp",
+                "begin_line": "52",
+                "calls": [
+                    {"callee": "op_04", "line": "54", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "op_04", "file": "mech/limits.cpp", "begin_line": "28"}
+        ],
+        [
+            {
+                "func": "entry_fanout",
+                "file": "mech/limits.cpp",
+                "begin_line": "52",
+                "calls": [
+                    {"callee": "op_05", "line": "54", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "op_05", "file": "mech/limits.cpp", "begin_line": "29"}
+        ],
+        [
+            {
+                "func": "entry_fanout",
+                "file": "mech/limits.cpp",
+                "begin_line": "52",
+                "calls": [
+                    {"callee": "op_06", "line": "54", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "op_06", "file": "mech/limits.cpp", "begin_line": "30"}
+        ],
+        [
+            {
+                "func": "entry_fanout",
+                "file": "mech/limits.cpp",
+                "begin_line": "52",
+                "calls": [
+                    {"callee": "op_07", "line": "54", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "op_07", "file": "mech/limits.cpp", "begin_line": "31"}
+        ],
+        [
+            {
+                "func": "entry_fanout",
+                "file": "mech/limits.cpp",
+                "begin_line": "52",
+                "calls": [
+                    {"callee": "op_08", "line": "54", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "op_08", "file": "mech/limits.cpp", "begin_line": "32"}
+        ],
+        [
+            {
+                "func": "entry_fanout",
+                "file": "mech/limits.cpp",
+                "begin_line": "52",
+                "calls": [
+                    {"callee": "op_09", "line": "54", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "op_09", "file": "mech/limits.cpp", "begin_line": "33"}
+        ],
+        [
+            {
+                "func": "entry_fanout",
+                "file": "mech/limits.cpp",
+                "begin_line": "52",
+                "calls": [
+                    {"callee": "op_10", "line": "54", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "op_10", "file": "mech/limits.cpp", "begin_line": "34"}
+        ],
+        [
+            {
+                "func": "entry_fanout",
+                "file": "mech/limits.cpp",
+                "begin_line": "52",
+                "calls": [
+                    {"callee": "op_11", "line": "54", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "op_11", "file": "mech/limits.cpp", "begin_line": "35"}
+        ],
+        [
+            {
+                "func": "entry_fanout",
+                "file": "mech/limits.cpp",
+                "begin_line": "52",
+                "calls": [
+                    {"callee": "op_12", "line": "54", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "op_12", "file": "mech/limits.cpp", "begin_line": "36"}
+        ],
+        [
+            {
+                "func": "entry_fanout",
+                "file": "mech/limits.cpp",
+                "begin_line": "52",
+                "calls": [
+                    {"callee": "op_13", "line": "54", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "op_13", "file": "mech/limits.cpp", "begin_line": "37"}
+        ],
+        [
+            {
+                "func": "entry_fanout",
+                "file": "mech/limits.cpp",
+                "begin_line": "52",
+                "calls": [
+                    {"callee": "op_14", "line": "54", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "op_14", "file": "mech/limits.cpp", "begin_line": "38"}
+        ],
+        [
+            {
+                "func": "entry_fanout",
+                "file": "mech/limits.cpp",
+                "begin_line": "52",
+                "calls": [
+                    {"callee": "op_15", "line": "54", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "op_15", "file": "mech/limits.cpp", "begin_line": "39"}
+        ],
+        [
+            {
+                "func": "entry_fanout",
+                "file": "mech/limits.cpp",
+                "begin_line": "52",
+                "calls": [
+                    {"callee": "op_16", "line": "54", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "op_16", "file": "mech/limits.cpp", "begin_line": "40"}
+        ],
+        [
+            {
+                "func": "entry_fanout",
+                "file": "mech/limits.cpp",
+                "begin_line": "52",
+                "calls": [
+                    {"callee": "op_17", "line": "54", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "op_17", "file": "mech/limits.cpp", "begin_line": "41"}
+        ],
+        [
+            {
+                "func": "entry_fanout",
+                "file": "mech/limits.cpp",
+                "begin_line": "52",
+                "calls": [
+                    {"callee": "op_18", "line": "54", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "op_18", "file": "mech/limits.cpp", "begin_line": "42"}
+        ],
+        [
+            {
+                "func": "entry_fanout",
+                "file": "mech/limits.cpp",
+                "begin_line": "52",
+                "calls": [
+                    {"callee": "op_19", "line": "54", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "op_19", "file": "mech/limits.cpp", "begin_line": "43"}
+        ]
+    ]
+}

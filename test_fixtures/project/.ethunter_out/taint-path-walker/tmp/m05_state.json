@@ -1,0 +1,60 @@
+{
+    "tree_id": "m05",
+    "entry": {
+        "name": "entry_ext",
+        "file": "/home/admin/cc/wksp/siakam_security_skills/taint_path_walker/test_fixtures/project/mech/external.c",
+        "form": "parameter_input",
+        "taint_data": "v",
+        "local_module": "ISP 固件",
+        "partner_module": "用户态 APP",
+        "para_index": "0"
+    },
+    "taint_marks": [
+        {
+            "var": "v",
+            "kind": "param",
+            "index": 0
+        }
+    ],
+    "phase": "done",
+    "tree": {
+        "nodes": [
+            {
+                "id": 1,
+                "func": "entry_ext",
+                "file": "mech/external.c",
+                "begin_line": "3"
+            }
+        ],
+        "edges": []
+    },
+    "queue": [],
+    "terminal_paths": [
+        {
+            "path": [
+                1
+            ],
+            "end_reason": "离开项目"
+        }
+    ],
+    "untraceable": [
+        {
+            "func": "entry_ext",
+            "line": "5",
+            "target": "vendor_crypto_sign",
+            "reason": "源码缺失",
+            "tried": [
+                "全项目 grep vendor_crypto_sign（--include=*.c,*.h,*.cpp,*.hpp）：仅 extern 声明 @mech/external.c:1 与调用点 @mech/external.c:5",
+                "全项目文件名模式匹配 *crypto* / *vendor*：无匹配实现文件",
+                "枚举项目全部 15 个 C/C++ 源文件（c/、cpp/、mech/）：无 vendor_crypto_sign 定义"
+            ]
+        }
+    ],
+    "truncations": [],
+    "dispatch_cache": [],
+    "counters": {
+        "queue_remaining": 0,
+        "terminal_paths": 1,
+        "max_depth": 1
+    }
+}

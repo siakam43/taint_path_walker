@@ -1,0 +1,79 @@
+{
+    "entry_deep$m02": [
+        [
+            {
+                "func": "entry_deep",
+                "file": "mech/limits.cpp",
+                "begin_line": "16",
+                "calls": [
+                    {"callee": "deep0", "line": "18", "taint_args": ["v"]}
+                ]
+            },
+            {
+                "func": "deep0",
+                "file": "mech/limits.cpp",
+                "begin_line": "14",
+                "calls": [
+                    {"callee": "deep1", "line": "14", "taint_args": ["v"]}
+                ]
+            },
+            {
+                "func": "deep1",
+                "file": "mech/limits.cpp",
+                "begin_line": "13",
+                "calls": [
+                    {"callee": "deep2", "line": "13", "taint_args": ["v"]}
+                ]
+            },
+            {
+                "func": "deep2",
+                "file": "mech/limits.cpp",
+                "begin_line": "12",
+                "calls": [
+                    {"callee": "deep3", "line": "12", "taint_args": ["v"]}
+                ]
+            },
+            {
+                "func": "deep3",
+                "file": "mech/limits.cpp",
+                "begin_line": "11",
+                "calls": [
+                    {"callee": "deep4", "line": "11", "taint_args": ["v"]}
+                ]
+            },
+            {
+                "func": "deep4",
+                "file": "mech/limits.cpp",
+                "begin_line": "10",
+                "calls": [
+                    {"callee": "deep5", "line": "10", "taint_args": ["v"]}
+                ]
+            },
+            {
+                "func": "deep5",
+                "file": "mech/limits.cpp",
+                "begin_line": "9",
+                "calls": [
+                    {"callee": "deep6", "line": "9", "taint_args": ["v"]}
+                ]
+            },
+            {
+                "func": "deep6",
+                "file": "mech/limits.cpp",
+                "begin_line": "8",
+                "calls": [
+                    {"callee": "deep7", "line": "8", "taint_args": ["v"]}
+                ]
+            },
+            {
+                "func": "deep7",
+                "file": "mech/limits.cpp",
+                "begin_line": "7",
+                "calls": [
+                    {"callee": "deep8", "line": "7", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "deep8", "file": "mech/limits.cpp", "begin_line": "6"}
+        ]
+    ]
+}

@@ -1,0 +1,37 @@
+{
+    "isp::util::entry_overload$cpp03": [
+        [
+            {
+                "func": "isp::util::entry_overload",
+                "file": "cpp/overload.cpp",
+                "begin_line": "22",
+                "calls": [
+                    {"callee": "isp::util::convert", "line": "24", "taint_args": ["s"]}
+                ]
+            },
+            {"func": "isp::util::convert", "file": "cpp/overload.cpp", "begin_line": "12"}
+        ],
+        [
+            {
+                "func": "isp::util::entry_overload",
+                "file": "cpp/overload.cpp",
+                "begin_line": "22",
+                "calls": [
+                    {"callee": "isp::util::convert", "line": "26", "taint_args": ["v", "scale"]}
+                ]
+            },
+            {"func": "isp::util::convert", "file": "cpp/overload.cpp", "begin_line": "17"}
+        ],
+        [
+            {
+                "func": "isp::util::entry_overload",
+                "file": "cpp/overload.cpp",
+                "begin_line": "22",
+                "calls": [
+                    {"callee": "isp::util::convert", "line": "25", "taint_args": ["v"]}
+                ]
+            },
+            {"func": "isp::util::convert", "file": "cpp/overload.cpp", "begin_line": "7"}
+        ]
+    ]
+}
