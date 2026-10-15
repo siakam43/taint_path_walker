@@ -62,7 +62,7 @@ rm test_fixtures/project/.ethunter_out/taint-path-walker/tmp/c01_state.json
 # → 按 skill 流程完整重跑 c01，然后：
 cp test_fixtures/project/.ethunter_out/taint-path-walker/c01.json /tmp/c01_direct.json
 
-# B2 完成态恢复：删输出、留状态，重跑应走恢复分支
+# B2 完成态恢复：删输出、留状态，重跑应走恢复路径（经 2.5 任务恢复检查转入 6.2 恢复分支）
 rm test_fixtures/project/.ethunter_out/taint-path-walker/c01.json
 # → 重跑 c01
 diff /tmp/c01_direct.json test_fixtures/project/.ethunter_out/taint-path-walker/c01.json && echo RESUME_OK
