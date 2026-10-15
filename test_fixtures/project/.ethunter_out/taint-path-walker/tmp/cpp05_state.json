@@ -1,32 +1,160 @@
 {
     "tree_id": "cpp05",
-    "entry": {"name": "isp::hal::entry_frame", "file": "/home/admin/cc/wksp/siakam_security_skills/taint_path_walker/test_fixtures/project/cpp/ctor_conv.cpp", "form": "parameter_input", "taint_data": "id/data/len/sel", "local_module": "ISP 固件", "partner_module": "用户态 APP", "para_index": "0/1/2/3"},
-    "taint_marks": [{"var": "id", "kind": "param", "index": 0}, {"var": "data", "kind": "param", "index": 1}, {"var": "len", "kind": "param", "index": 2}, {"var": "sel", "kind": "param", "index": 3}],
+    "entry": {
+        "name": "isp::hal::entry_frame",
+        "file": "/home/admin/cc/wksp/siakam_security_skills/taint_path_walker/test_fixtures/project/cpp/ctor_conv.cpp",
+        "form": "parameter_input",
+        "taint_data": "id/data/len/sel",
+        "local_module": "ISP 固件",
+        "partner_module": "用户态 APP",
+        "para_index": "0/1/2/3"
+    },
+    "taint_marks": [
+        {
+            "var": "id",
+            "kind": "param",
+            "index": 0
+        },
+        {
+            "var": "data",
+            "kind": "param",
+            "index": 1
+        },
+        {
+            "var": "len",
+            "kind": "param",
+            "index": 2
+        },
+        {
+            "var": "sel",
+            "kind": "param",
+            "index": 3
+        }
+    ],
     "phase": "done",
     "tree": {
         "nodes": [
-            {"id": 1, "func": "isp::hal::entry_frame", "file": "cpp/ctor_conv.cpp", "begin_line": "42"},
-            {"id": 2, "func": "isp::hal::Frame::Frame", "file": "cpp/ctor_conv.cpp", "begin_line": "13"},
-            {"id": 3, "func": "isp::hal::Frame::Frame", "file": "cpp/ctor_conv.cpp", "begin_line": "22"},
-            {"id": 4, "func": "isp::hal::Frame::operator=", "file": "cpp/ctor_conv.cpp", "begin_line": "30"},
-            {"id": 5, "func": "isp::hal::Frame::operator[]", "file": "cpp/ctor_conv.cpp", "begin_line": "37"}
+            {
+                "id": 1,
+                "func": "isp::hal::entry_frame",
+                "file": "cpp/ctor_conv.cpp",
+                "begin_line": "42"
+            },
+            {
+                "id": 2,
+                "func": "isp::hal::Frame::Frame",
+                "file": "cpp/ctor_conv.cpp",
+                "begin_line": "13"
+            },
+            {
+                "id": 3,
+                "func": "isp::hal::Frame::Frame",
+                "file": "cpp/ctor_conv.cpp",
+                "begin_line": "22"
+            },
+            {
+                "id": 4,
+                "func": "isp::hal::Frame::operator=",
+                "file": "cpp/ctor_conv.cpp",
+                "begin_line": "30"
+            },
+            {
+                "id": 5,
+                "func": "isp::hal::Frame::operator[]",
+                "file": "cpp/ctor_conv.cpp",
+                "begin_line": "37"
+            }
         ],
         "edges": [
-            {"from": 1, "to": 2, "call_sites": [{"line": "44", "taint_args": ["id", "data", "len"]}]},
-            {"from": 1, "to": 3, "call_sites": [{"line": "45", "taint_args": ["o"]}]},
-            {"from": 1, "to": 4, "call_sites": [{"line": "47", "taint_args": ["o"]}]},
-            {"from": 1, "to": 5, "call_sites": [{"line": "48", "taint_args": ["i"]}]}
+            {
+                "from": 1,
+                "to": 2,
+                "call_sites": [
+                    {
+                        "line": "44",
+                        "taint_args": [
+                            "id",
+                            "data",
+                            "len"
+                        ]
+                    }
+                ]
+            },
+            {
+                "from": 1,
+                "to": 3,
+                "call_sites": [
+                    {
+                        "line": "45",
+                        "taint_args": [
+                            "o"
+                        ]
+                    }
+                ]
+            },
+            {
+                "from": 1,
+                "to": 4,
+                "call_sites": [
+                    {
+                        "line": "47",
+                        "taint_args": [
+                            "o"
+                        ]
+                    }
+                ]
+            },
+            {
+                "from": 1,
+                "to": 5,
+                "call_sites": [
+                    {
+                        "line": "48",
+                        "taint_args": [
+                            "i"
+                        ]
+                    }
+                ]
+            }
         ]
     },
     "queue": [],
     "terminal_paths": [
-        {"path": [1, 2], "end_reason": "传播停止"},
-        {"path": [1, 3], "end_reason": "传播停止"},
-        {"path": [1, 4], "end_reason": "传播停止"},
-        {"path": [1, 5], "end_reason": "传播停止"}
+        {
+            "path": [
+                1,
+                2
+            ],
+            "end_reason": "传播停止"
+        },
+        {
+            "path": [
+                1,
+                3
+            ],
+            "end_reason": "传播停止"
+        },
+        {
+            "path": [
+                1,
+                4
+            ],
+            "end_reason": "传播停止"
+        },
+        {
+            "path": [
+                1,
+                5
+            ],
+            "end_reason": "传播停止"
+        }
     ],
     "untraceable": [],
     "truncations": [],
     "dispatch_cache": [],
-    "counters": {"queue_remaining": 0, "terminal_paths": 4, "max_depth": 2}
+    "counters": {
+        "queue_remaining": 0,
+        "terminal_paths": 4,
+        "max_depth": 2
+    }
 }

@@ -1,25 +1,82 @@
 {
     "tree_id": "cpp02",
-    "entry": {"name": "isp::hal::bus_send_static", "file": "/home/admin/cc/wksp/siakam_security_skills/taint_path_walker/test_fixtures/project/cpp/vtable.cpp", "form": "parameter_input", "taint_data": "data/len", "local_module": "ISP 固件", "partner_module": "Sensor 总线", "para_index": "0/1"},
-    "taint_marks": [{"var": "data", "kind": "param", "index": 0}, {"var": "len", "kind": "param", "index": 1}],
+    "entry": {
+        "name": "isp::hal::bus_send_static",
+        "file": "/home/admin/cc/wksp/siakam_security_skills/taint_path_walker/test_fixtures/project/cpp/vtable.cpp",
+        "form": "parameter_input",
+        "taint_data": "data/len",
+        "local_module": "ISP 固件",
+        "partner_module": "Sensor 总线",
+        "para_index": "0/1"
+    },
+    "taint_marks": [
+        {
+            "var": "data",
+            "kind": "param",
+            "index": 0
+        },
+        {
+            "var": "len",
+            "kind": "param",
+            "index": 1
+        }
+    ],
     "phase": "done",
     "tree": {
         "nodes": [
-            {"id": 1, "func": "isp::hal::bus_send_static", "file": "cpp/vtable.cpp", "begin_line": "42"},
-            {"id": 2, "func": "isp::hal::SpiBus::transfer", "file": "cpp/vtable.cpp", "begin_line": "15"}
+            {
+                "id": 1,
+                "func": "isp::hal::bus_send_static",
+                "file": "cpp/vtable.cpp",
+                "begin_line": "42"
+            },
+            {
+                "id": 2,
+                "func": "isp::hal::SpiBus::transfer",
+                "file": "cpp/vtable.cpp",
+                "begin_line": "15"
+            }
         ],
         "edges": [
-            {"from": 1, "to": 2, "call_sites": [{"line": "45", "taint_args": ["data", "len"]}]}
+            {
+                "from": 1,
+                "to": 2,
+                "call_sites": [
+                    {
+                        "line": "45",
+                        "taint_args": [
+                            "data",
+                            "len"
+                        ]
+                    }
+                ]
+            }
         ]
     },
     "queue": [],
     "terminal_paths": [
-        {"path": [1, 2], "end_reason": "传播停止"}
+        {
+            "path": [
+                1,
+                2
+            ],
+            "end_reason": "传播停止"
+        }
     ],
     "untraceable": [],
     "truncations": [],
     "dispatch_cache": [
-        {"site": "cpp/vtable.cpp:45", "candidates": ["isp::hal::SpiBus::transfer"], "resolved": true}
+        {
+            "site": "cpp/vtable.cpp:45",
+            "candidates": [
+                "isp::hal::SpiBus::transfer@15"
+            ],
+            "resolved": true
+        }
     ],
-    "counters": {"queue_remaining": 0, "terminal_paths": 1, "max_depth": 2}
+    "counters": {
+        "queue_remaining": 0,
+        "terminal_paths": 1,
+        "max_depth": 2
+    }
 }

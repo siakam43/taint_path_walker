@@ -17,11 +17,7 @@
                     {"callee": "cyc_b", "line": "10", "taint_args": ["v"]}
                 ]
             },
-            {
-                "func": "cyc_b",
-                "file": "mech/cycle.c",
-                "begin_line": "3"
-            }
+            {"func": "cyc_b", "file": "mech/cycle.c", "begin_line": "3"}
         ]
     ]
 }

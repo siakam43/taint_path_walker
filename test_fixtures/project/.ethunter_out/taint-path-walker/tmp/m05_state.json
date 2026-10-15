@@ -6,7 +6,7 @@
         "form": "parameter_input",
         "taint_data": "v",
         "local_module": "ISP 固件",
-        "partner_module": "用户态 APP",
+        "partner_module": "外部签名模块",
         "para_index": "0"
     },
     "taint_marks": [
@@ -44,9 +44,8 @@
             "target": "vendor_crypto_sign",
             "reason": "源码缺失",
             "tried": [
-                "全项目 grep vendor_crypto_sign（--include=*.c,*.h,*.cpp,*.hpp）：仅 extern 声明 @mech/external.c:1 与调用点 @mech/external.c:5",
-                "全项目文件名模式匹配 *crypto* / *vendor*：无匹配实现文件",
-                "枚举项目全部 15 个 C/C++ 源文件（c/、cpp/、mech/）：无 vendor_crypto_sign 定义"
+                "grep -rn \"vendor_crypto_sign\" c/ cpp/ mech/（仅 mech/external.c:1 extern 声明，无定义）",
+                "find 全分析范围收集 15 个源文件（*.c/*.h/*.cpp）后检索函数定义（无匹配）"
             ]
         }
     ],

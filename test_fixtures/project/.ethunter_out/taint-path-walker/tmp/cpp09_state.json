@@ -1,28 +1,102 @@
 {
     "tree_id": "cpp09",
-    "entry": {"name": "isp::hal::entry_mi", "file": "/home/admin/cc/wksp/siakam_security_skills/taint_path_walker/test_fixtures/project/cpp/mi.cpp", "form": "parameter_input", "taint_data": "v", "local_module": "ISP 固件", "partner_module": "Sensor 总线", "para_index": "1"},
-    "taint_marks": [{"var": "v", "kind": "param", "index": 1}],
+    "entry": {
+        "name": "isp::hal::entry_mi",
+        "file": "/home/admin/cc/wksp/siakam_security_skills/taint_path_walker/test_fixtures/project/cpp/mi.cpp",
+        "form": "parameter_input",
+        "taint_data": "v",
+        "local_module": "ISP 固件",
+        "partner_module": "Sensor 总线",
+        "para_index": "1"
+    },
+    "taint_marks": [
+        {
+            "var": "v",
+            "kind": "param",
+            "index": 1
+        }
+    ],
     "phase": "done",
     "tree": {
         "nodes": [
-            {"id": 1, "func": "isp::hal::entry_mi", "file": "cpp/mi.cpp", "begin_line": "31"},
-            {"id": 2, "func": "isp::hal::CtrlBase::on_ctrl", "file": "cpp/mi.cpp", "begin_line": "11"},
-            {"id": 3, "func": "isp::hal::DualUnit::on_ctrl", "file": "cpp/mi.cpp", "begin_line": "26"}
+            {
+                "id": 1,
+                "func": "isp::hal::entry_mi",
+                "file": "cpp/mi.cpp",
+                "begin_line": "31"
+            },
+            {
+                "id": 2,
+                "func": "isp::hal::DualUnit::on_ctrl",
+                "file": "cpp/mi.cpp",
+                "begin_line": "26"
+            },
+            {
+                "id": 3,
+                "func": "isp::hal::CtrlBase::on_ctrl",
+                "file": "cpp/mi.cpp",
+                "begin_line": "11"
+            }
         ],
         "edges": [
-            {"from": 1, "to": 2, "call_sites": [{"line": "33", "taint_args": ["v"]}]},
-            {"from": 1, "to": 3, "call_sites": [{"line": "33", "taint_args": ["v"]}]}
+            {
+                "from": 1,
+                "to": 2,
+                "call_sites": [
+                    {
+                        "line": "33",
+                        "taint_args": [
+                            "v"
+                        ]
+                    }
+                ]
+            },
+            {
+                "from": 1,
+                "to": 3,
+                "call_sites": [
+                    {
+                        "line": "33",
+                        "taint_args": [
+                            "v"
+                        ]
+                    }
+                ]
+            }
         ]
     },
     "queue": [],
     "terminal_paths": [
-        {"path": [1, 2], "end_reason": "传播停止"},
-        {"path": [1, 3], "end_reason": "传播停止"}
+        {
+            "path": [
+                1,
+                2
+            ],
+            "end_reason": "传播停止"
+        },
+        {
+            "path": [
+                1,
+                3
+            ],
+            "end_reason": "传播停止"
+        }
     ],
     "untraceable": [],
     "truncations": [],
     "dispatch_cache": [
-        {"site": "cpp/mi.cpp:33", "candidates": ["isp::hal::DualUnit::on_ctrl", "isp::hal::CtrlBase::on_ctrl"], "resolved": true}
+        {
+            "site": "cpp/mi.cpp:33",
+            "candidates": [
+                "isp::hal::DualUnit::on_ctrl@26",
+                "isp::hal::CtrlBase::on_ctrl@11"
+            ],
+            "resolved": true
+        }
     ],
-    "counters": {"queue_remaining": 0, "terminal_paths": 2, "max_depth": 2}
+    "counters": {
+        "queue_remaining": 0,
+        "terminal_paths": 2,
+        "max_depth": 2
+    }
 }

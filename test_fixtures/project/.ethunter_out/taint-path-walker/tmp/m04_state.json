@@ -1,26 +1,87 @@
 {
     "tree_id": "m04",
-    "entry": {"name": "entry_cycle", "file": "/home/admin/cc/wksp/siakam_security_skills/taint_path_walker/test_fixtures/project/mech/cycle.c", "form": "parameter_input", "taint_data": "v", "local_module": "ISP 固件", "partner_module": "用户态 APP", "para_index": "0"},
-    "taint_marks": [{"var": "v", "kind": "param", "index": 0}],
+    "entry": {
+        "name": "entry_cycle",
+        "file": "/home/admin/cc/wksp/siakam_security_skills/taint_path_walker/test_fixtures/project/mech/cycle.c",
+        "form": "parameter_input",
+        "taint_data": "v",
+        "local_module": "ISP 固件",
+        "partner_module": "用户态 APP",
+        "para_index": "0"
+    },
+    "taint_marks": [
+        {
+            "var": "v",
+            "kind": "param",
+            "index": 0
+        }
+    ],
     "phase": "done",
     "tree": {
         "nodes": [
-            {"id": 1, "func": "entry_cycle", "file": "mech/cycle.c", "begin_line": "13"},
-            {"id": 2, "func": "cyc_a", "file": "mech/cycle.c", "begin_line": "8"},
-            {"id": 3, "func": "cyc_b", "file": "mech/cycle.c", "begin_line": "3"}
+            {
+                "id": 1,
+                "func": "entry_cycle",
+                "file": "mech/cycle.c",
+                "begin_line": "13"
+            },
+            {
+                "id": 2,
+                "func": "cyc_a",
+                "file": "mech/cycle.c",
+                "begin_line": "8"
+            },
+            {
+                "id": 3,
+                "func": "cyc_b",
+                "file": "mech/cycle.c",
+                "begin_line": "3"
+            }
         ],
         "edges": [
-            {"from": 1, "to": 2, "call_sites": [{"line": "15", "taint_args": ["v"]}]},
-            {"from": 2, "to": 3, "call_sites": [{"line": "10", "taint_args": ["v"]}]},
-            {"from": 3, "to": 2, "call_sites": [{"line": "5", "taint_args": ["v"]}]}
+            {
+                "from": 1,
+                "to": 2,
+                "call_sites": [
+                    {
+                        "line": "15",
+                        "taint_args": [
+                            "v"
+                        ]
+                    }
+                ]
+            },
+            {
+                "from": 2,
+                "to": 3,
+                "call_sites": [
+                    {
+                        "line": "10",
+                        "taint_args": [
+                            "v"
+                        ]
+                    }
+                ]
+            }
         ]
     },
     "queue": [],
     "terminal_paths": [
-        {"path": [1, 2, 3], "end_reason": "环终止"}
+        {
+            "path": [
+                1,
+                2,
+                3
+            ],
+            "end_reason": "环终止"
+        }
     ],
     "untraceable": [],
     "truncations": [],
     "dispatch_cache": [],
-    "counters": {"queue_remaining": 0, "terminal_paths": 1, "max_depth": 3}
+    "counters": {
+        "queue_remaining": 0,
+        "terminal_paths": 1,
+        "max_depth": 3
+    }
 }
