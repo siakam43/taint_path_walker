@@ -28,7 +28,7 @@
                 "file": "cpp/templates.cpp",
                 "begin_line": "15",
                 "calls": [
-                    {"callee": "isp::util::RingBuf::get", "line": "20", "taint_args": []}
+                    {"callee": "isp::util::RingBuf::get", "line": "20", "taint_args": [], "taint_via": "receiver member m_v"}
                 ]
             },
             {"func": "isp::util::RingBuf::get", "file": "cpp/templates.cpp", "begin_line": "7"}

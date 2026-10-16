@@ -24,24 +24,24 @@ test_fixtures/expected/   # 验收通过后录制的基线 {TreeID}.json
 
 `test_fixtures/expected/` 为 2026-10-15 录制、18 个基线（c01–c04、cpp01–cpp09、m01–m05）全部验收通过版本的产物；用例表共 22 行（18 个正常用例 + resume 用例 + bad01–bad03 错误用例），resume 与错误用例不产出基线。追踪由 LLM 执行、
 输出非严格字节级确定，因此**主验收依据为用例表的验收点**，基线 JSON 作比对参考（比对有差异时
-逐项判定是否为 LLM 表述性差异；链集合与解析结论才是硬性标准）。
+逐项判定是否为 LLM 表述性差异；链集合与解析结论才是硬性标准）。c01/cpp04/cpp08 三个基线自 2026-10-16 起含 `taint_via` 字段（空数组调用点的通道描述）；其余 15 个基线不得含该字段。
 
 ## 用例与验收点（主验收依据：必须成立的链集合与解析结论）
 
 | 用例 | 入口 | 验收点 |
 |------|------|--------|
-| c01 | hal_apply_cfg | 链集合恰好 = { [hal_apply_cfg, hal_cfg_step1, hal_cfg_step2], [hal_apply_cfg, hal_cfg_step3], [hal_apply_cfg, hal_cfg_check] }；[E,hal_cfg_step2] 直调链被去重但其调用点并入链1（链1 的 E.calls 含 step1 与 step2 两条；[E,step3] 的 E.calls 为 step3；[E,check] 的 E.calls 为 check 且 taint_args 为空数组）；step2 内的校验不阻挡传播 |
+| c01 | hal_apply_cfg | 链集合恰好 = { [hal_apply_cfg, hal_cfg_step1, hal_cfg_step2], [hal_apply_cfg, hal_cfg_step3], [hal_apply_cfg, hal_cfg_check] }；[E,hal_cfg_step2] 直调链被去重但其调用点并入链1（链1 的 E.calls 含 step1 与 step2 两条；[E,step3] 的 E.calls 为 step3；[E,check] 的 E.calls 为 check 且 taint_args 为空数组、taint_via 为 "global g_cfg_mode"）；step2 内的校验不阻挡传播 |
 | c02 | hal_poll_shared | 恰好 1 条链 [hal_poll_shared, hal_process_cmd]；不得出现 shm_read_block 节点；calls.taint_args = [p, n] |
 | c03 | hal_dispatch | ctx（框架指针）未产生任何追踪；恰好 1 条链 [hal_dispatch, hal_process_cmd] |
 | c04 | hal_cfg_apply2 | flags（常量类参数：仅与固定值位测试、未流入其他位置）被二次过滤不追踪；恰 1 条链 [hal_cfg_apply2, c04_sink]，taint_args [p, n] |
 | cpp01 | isp::hal::bus_send | 分发点解析出 4 个候选：BusBase::transfer、SpiBus::transfer、I2cBus::transfer、UartBus::transfer；输出 4 条链 |
 | cpp02 | isp::hal::bus_send_static | 恰好 1 条链 [bus_send_static, SpiBus::transfer]；不得出现其他覆写或基类 |
 | cpp03 | isp::util::entry_overload | 3 条链，convert 三个重载各一条（按 begin_line 区分）；callee 同名不被误合并 |
-| cpp04 | isp::util::entry_template | 3 条兄弟链：entry_template→RingBuf::put（taint_args [v]）、→clamp_val（[v]）、→RingBuf::get（[]，污点经接收对象成员态进入）；定义处限定名，不写 <int> 等实例化参数 |
+| cpp04 | isp::util::entry_template | 3 条兄弟链：entry_template→RingBuf::put（taint_args [v]）、→clamp_val（[v]）、→RingBuf::get（[] 且 taint_via 为 "receiver member m_v"，污点经接收对象成员态进入）；定义处限定名，不写 <int> 等实例化参数 |
 | cpp05 | isp::hal::entry_frame | 4 条链，分别指向 Frame::Frame(3参)构造、Frame::Frame(拷贝)构造、Frame::operator=、Frame::operator[]；两个构造按 begin_line 区分；不传污点的构造调用点（Frame h(0,"",0) 所在行）不得进入 calls |
 | cpp06 | isp::hal::entry_implicit | 2 条兄弟链：[entry_implicit, Tag::Tag]（隐式转换构造，taint_args [v]）与 [entry_implicit, tag_sink]（[t]），两条边源于同一调用行 |
 | cpp07 | isp::hal::entry_smart | s->feed 精确解析为 LogSink::feed（唯一目标，不得枚举 Sink::feed）；pkt-> 成员写入经穿透处理（不得出现 shared_ptr::operator-> 节点） |
-| cpp08 | isp::hal::entry_lambda | lambda 节点名形如 <lambda@cpp/smart_lambda.cpp:行号>；calls.taint_args 为空数组（污点经捕获传入） |
+| cpp08 | isp::hal::entry_lambda | lambda 节点名形如 <lambda@cpp/smart_lambda.cpp:行号>；calls.taint_args 为空数组且 taint_via 为 "lambda capture data, len"（污点经捕获传入） |
 | cpp09 | isp::hal::entry_mi | 恰好 2 条链：DualUnit::on_ctrl 与 CtrlBase::on_ctrl（多重继承合并 + 基类默认实现） |
 | m01 | m_entry | 输出恰好 1 条链 [m_entry, m_b, m_leaf_c]；m_entry.calls 含 m_b 与 m_leaf_c 两个调用点条目 |
 | m02 | entry_deep | 链 [entry_deep, deep0..deep8] 长度恰 10；state 截断记录含 deep8->deep9 |

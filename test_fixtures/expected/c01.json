@@ -26,7 +26,7 @@
                 "file": "c/c_base.c",
                 "begin_line": "33",
                 "calls": [
-                    {"callee": "hal_cfg_check", "line": "39", "taint_args": []}
+                    {"callee": "hal_cfg_check", "line": "39", "taint_args": [], "taint_via": "global g_cfg_mode"}
                 ]
             },
             {"func": "hal_cfg_check", "file": "c/c_base.c", "begin_line": "28"}
