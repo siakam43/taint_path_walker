@@ -161,7 +161,7 @@ api-cleaner 输出 `api_clean.json` 的一条，例如：
 4. **`calls` 字段**（仅调用方元素携带，末元素无此字段）：描述"本函数在哪些行把污点传给了本链中位于其后的元素"（含下一元素，以及被去重吞并的直调边对应的后继元素）。
    - `callee`：被调函数限定名，必须等于本链中位于该元素之后的某个元素（通常为下一元素）的 `func`。
    - `line`：调用点所在行号（调用方文件中），字符串。
-   - `taint_args`：被调函数接收污点的形参名数组（形参定义名原文）；被调函数无污点形参、污点经非形参通道进入时为空数组——三种情形：①污点经全局/静态变量进入；②污点经接收对象（this 所指对象的成员态）进入；③污点经 lambda 捕获进入。
+   - `taint_args`：被调函数接收污点的形参名数组（形参定义名原文）；被调函数无污点形参、污点经非形参通道进入时为空数组——三种情形：①污点经全局/静态变量进入；②污点经接收对象（this 所指对象的成员态）进入；③污点经 lambda 捕获进入。空数组条目须同步记录通道描述 `taint_via`（`global <名>` / `receiver member <成员路径>` / `lambda capture <捕获项>`；格式与分隔符规则见 SKILL 4.2）。
    - 同一元素对同一后继元素的多个调用点合并记录、按 `line` 升序；更短链被去重吞掉时，其调用点信息合并保留在幸存链上（信息不丢失）；不传污点的调用点不记录。`calls` 条目整体按 `line` 数值升序；同一 `line` 按 `callee` 字符串字典序；完全相同条目去重。
 5. **链排序**：链数组按链的元素序列做字典序升序：逐元素比较（`file`、`begin_line`、`func`，均按字符串字典序）。
 6. **去重（子序列包含）**：链 X 的函数序列是链 Y 的函数序列的子序列时，只保留 Y（极大链）；被吞并链的调用点信息合并进幸存链。例：`[a,b,c]`、`[a,b]`、`[a,c]` 只输出 `[a,b,c]`。
@@ -253,7 +253,7 @@ api-cleaner 输出 `api_clean.json` 的一条，例如：
   "phase": "tracing|done",
   "tree": {
     "nodes": [ {"id": 1, "func": "isp::hal::SensorCtrl::read_reg", "file": "src/sensor.cpp", "begin_line": "31"} ],
-    "edges": [ {"from": 1, "to": 2, "call_sites": [ {"line": "45", "taint_args": ["data"]} ]} ]
+    "edges": [ {"from": 1, "to": 2, "call_sites": [ {"line": "45", "taint_args": ["data"]}, {"line": "39", "taint_args": [], "taint_via": "global g_cfg_mode"} ]} ]
   },
   "queue": [ {"path": [1, 2], "frontier": {"func_id": 2, "tainted_vars": ["data"]}, "status": "pending|in_progress"} ],
   "terminal_paths": [ {"path": [1, 2, 3], "end_reason": "传播停止|离开项目|深度截断|扇出截断|环终止"} ],
@@ -265,6 +265,7 @@ api-cleaner 输出 `api_clean.json` 的一条，例如：
 
 - **end_reason 取值说明**："离开项目"含项目外无源码、目标不可确定的无法追踪终止（明细见 `untraceable`）；"深度截断"/"扇出截断"为上限截断（明细见 `truncations`）。
 - 截断明细（函数名+行号+传播去向）记入 `truncations`，与 `terminal_paths` 的"深度截断"/"扇出截断"对应。
+- `taint_via`：仅空数组调用点（`taint_args` 为空）携带的通道描述（`global <名>` / `receiver member <成员路径>` / `lambda capture <捕获项>`）；格式与分隔符规则见 SKILL 4.2。
 - **保存时机**：每处理完一个工作项（扩展完毕、子项入队、标终态）立即落盘。
 - **产出**：`terminal_paths` 是已完成链的原料，末尾统一做子序列去重 + 排序 + 组装输出。
 
