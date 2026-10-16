@@ -75,7 +75,8 @@
                 "call_sites": [
                     {
                         "line": "20",
-                        "taint_args": []
+                        "taint_args": [],
+                        "taint_via": "receiver member m_v"
                     }
                 ]
             }

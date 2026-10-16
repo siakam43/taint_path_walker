@@ -44,7 +44,8 @@
                 "call_sites": [
                     {
                         "line": "49",
-                        "taint_args": []
+                        "taint_args": [],
+                        "taint_via": "lambda capture data, len"
                     }
                 ]
             }

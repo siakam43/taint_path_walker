@@ -93,7 +93,8 @@
                 "call_sites": [
                     {
                         "line": "39",
-                        "taint_args": []
+                        "taint_args": [],
+                        "taint_via": "global g_cfg_mode"
                     }
                 ]
             },

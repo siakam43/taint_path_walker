@@ -6,7 +6,7 @@
                 "file": "cpp/smart_lambda.cpp",
                 "begin_line": "44",
                 "calls": [
-                    {"callee": "<lambda@cpp/smart_lambda.cpp:46>", "line": "49", "taint_args": []}
+                    {"callee": "<lambda@cpp/smart_lambda.cpp:46>", "line": "49", "taint_args": [], "taint_via": "lambda capture data, len"}
                 ]
             },
             {"func": "<lambda@cpp/smart_lambda.cpp:46>", "file": "cpp/smart_lambda.cpp", "begin_line": "46"}
